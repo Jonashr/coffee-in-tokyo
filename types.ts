@@ -31,3 +31,9 @@ export enum Area {
   NorthernTokyo = 'northern-tokyo',
   Outskirts = 'outskirts',
 }
+
+export enum RemoteWork {
+  NotSuitable = 0,
+  ShortPeriod = 1,
+  Suitable = 2
+}

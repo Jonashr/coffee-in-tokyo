@@ -2,6 +2,7 @@
 import express from 'express'
 import { Location, ILocation } from '../models/Location'
 import { toNewLocation } from '../utils'
+import locationsService from '../services/locationsService'
 
 const router = express.Router()
 
@@ -20,12 +21,17 @@ router.get('/:id', async (request, response) => {
   response.status(200).send(location)
 })
 
-router.post('/', async(request, response) => {
-  const newLocation = toNewLocation(request.body)
-
-  const location: ILocation = await Location.create(newLocation)
+router.post('/', (request, response, next) => {
+  try {
+    const newLocation = toNewLocation(request.body)
   
-  response.status(201).send(location)
+    const addedLocation = locationsService.addNewLocation(newLocation)
+  
+    response.status(201).send(addedLocation)
+  } catch(error) {
+    next(error)
+  }
 })
+
 
 export default router
