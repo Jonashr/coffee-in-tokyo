@@ -8,13 +8,13 @@ export type BaseLocation = {
   closestTrainStation?: string
 }
 
-export interface ILocation extends BaseLocation, Document {}
+export interface IStoreLocation extends BaseLocation, Document {}
 
-const LocationSchema: Schema = new Schema({
+const StoreLocationSchema: Schema = new Schema({
   address: { type: String, required: true },
   ward: { type: String, required: true },
   area: { type: String, required: true },
   closestTrainStation: { type: String }
 })
 
-export const Location: Model<ILocation> = model('Location', LocationSchema)
+export const StoreLocation: Model<IStoreLocation> = model('StoreLocation', StoreLocationSchema)

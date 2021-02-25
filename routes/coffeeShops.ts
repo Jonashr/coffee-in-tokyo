@@ -11,14 +11,18 @@ router.get('/', async (_, response) => {
   response.send(coffeeShops)
 })
 
-router.get('/:id', async (request, response) => {
-  const coffeeShop = await coffeeShopsService.getCoffeeShopById(request.params.id)
-
-  if(!coffeeShop) {
-    response.status(404).json(`Store with id: ${request.params.id} was not found.`)
+router.get('/:id', async (request, response, next) => {
+  try {
+    const coffeeShop = await coffeeShopsService.getCoffeeShopById(request.params.id)
+  
+    if(!coffeeShop) {
+      response.status(404).json(`Store with id: ${request.params.id} was not found.`)
+    }
+  
+    response.send(coffeeShop)
+  } catch(error) {
+    next(error)
   }
-
-  response.send(coffeeShop)
 })
 
 router.post('/', async (request, response, next) => {
@@ -42,7 +46,7 @@ router.delete('/:id', async (request, response, next) => {
     }
   
     return response.status(204).end()
-  } catch(error) {
+  } catch(error) {  
     next(error)
   }
 

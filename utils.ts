@@ -1,29 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { BaseCoffeeShop } from './models/CoffeeShop'
-import { BaseLocation } from './models/Location'
+import { BaseLocation } from './models/StoreLocation'
 import { Ward, Area, RemoteWork } from './types'
+import { Types } from 'mongoose'
+
 
 export const toNewLocation = (location: any): BaseLocation => {
-  return {
+  const baseLocation: BaseLocation = {
     address: parseGenericString(location.address, 'address'),
     ward: parseWard(location.ward),
     area: parseArea(location.area),
-    closestTrainStation: parseGenericString(location.closestTrainStation, 'closestTrainStation')
   }
+
+  if(location.closestTrainStation) {
+    location.closestTrainStation = parseGenericString(location.closestTrainStation, 'closestTrainStation')
+  }
+
+  return baseLocation
 }
 
 export const toNewCoffeeShop = (shop: any): BaseCoffeeShop => {
-  return {
+  const baseShop: BaseCoffeeShop = {
     name: parseGenericString(shop.name, 'name'),
-    location: parseGenericString(shop.location, 'location'),
+    location: parseObjectId(shop.location),
     wifi: parseBoolean(shop.wifi),
     onlineStore: parseBoolean(shop.onlineStore),
-    onlineStoreURL: parseGenericString(shop.onlineStoreURL, 'onlineStoreURL'),
-    website: parseGenericString(shop.website, 'website'),
     description: parseGenericString(shop.description, 'description'),
     remoteWork: parseRemoteWork(shop.remoteWork)
   }
+
+  if(shop.onlineStoreURL) {
+    shop.onlineStoreURL = parseGenericString(shop.onlineStoreURL, 'onlineStoreURL')
+  }
+
+  if(shop.website) {
+    shop.website =  parseGenericString(shop.website, 'website')
+  }
+
+  return baseShop
 }
 
 const parseGenericString = (value: string, fieldName: string): string => {
@@ -58,6 +73,17 @@ const parseRemoteWork = (remoteWork: any): RemoteWork => {
   }
 
   return remoteWork
+}
+
+const parseObjectId = (objectId: any): Types.ObjectId | Record<string, unknown> => {
+
+  if(!Types.ObjectId.isValid(objectId)) {
+    throw new Error(`Invalid key ${objectId as string}`)
+  }
+
+  const validObjectId = new Types.ObjectId(objectId)
+
+  return validObjectId
 }
 
 const isString = (text: any): text is string => {

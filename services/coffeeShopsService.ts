@@ -7,16 +7,12 @@ const addNewCoffeeShop = async (newCoffeeShop: BaseCoffeeShop): Promise<ICoffeeS
 }
 
 const getCoffeeShops = async(): Promise<Array<ICoffeeShop>> => {
-  const coffeeShop: Array<ICoffeeShop> = await CoffeeShop.find()
+  const coffeeShop: Array<ICoffeeShop> = await CoffeeShop.find().populate('location').exec()
   return coffeeShop
 }
 
-const getCoffeeShopById = async(id: string): Promise<ICoffeeShop> => {
-  const coffeeShop = await CoffeeShop.findById(id)
-
-  if(!coffeeShop) {
-    throw new Error(`Store with id ${id} does not exist.`)
-  }
+const getCoffeeShopById = async(id: string): Promise<ICoffeeShop | null> => {
+  const coffeeShop = await CoffeeShop.findById(id).populate('location').exec()
 
   return coffeeShop
 }
