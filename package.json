@@ -1,30 +1,22 @@
 {
   "name": "coffee-in-tokyo",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
-  "scripts": {
-    "tsc": "tsc",
-    "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts .",
-    "start": "node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": "https://github.com/Jonashr/coffee-in-tokyo.git",
+  "author": "Jonas Horvei <jonashorvei1@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@types/mongoose": "^5.10.3",
-    "dotenv-safe": "^8.2.0",
-    "express": "^4.17.1",
-    "mongoose": "^5.11.17",
-    "ts-node-dev": "^1.1.1"
+  "scripts": {
+    "server-dev": "yarn workspace server dev",
+    "client-dev": "yarn workspace client start",
+    "start": "run-p server-dev client-dev"
   },
   "devDependencies": {
-    "@types/express": "^4.17.11",
-    "@types/node": "^14.14.31",
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
-    "@typescript-eslint/parser": "^4.15.1",
-    "eslint": "^7.20.0",
-    "typescript": "^4.1.5"
+    "npm-run-all": "^4.1.5"
   }
 }
